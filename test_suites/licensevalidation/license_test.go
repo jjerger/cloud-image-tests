@@ -27,6 +27,10 @@ func TestWindowsActivationStatus(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Couldn't get image from metadata %v", err)
 	}
+	// May 2025: Skipping activation check for preview 2025 image. TODO: Remove with official release.
+	if strings.Contains(image, "windows-2025") {
+		t.Skip("Windows Server 2025 is in preview; skipping activation check.")
+	}
 	if utils.IsWindowsClient(image) {
 		t.Skip("Activation status only checked on server images.")
 	}
@@ -44,6 +48,14 @@ func TestWindowsActivationStatus(t *testing.T) {
 
 func TestLicenses(t *testing.T) {
 	ctx := utils.Context(t)
+	// May 2025: Skipping license check for preview 2025 image. TODO: Remove with official release.
+	image, err := utils.GetMetadata(ctx, "instance", "image")
+	if err != nil {
+		t.Fatalf("Couldn't get image from metadata %v", err)
+	}
+	if strings.Contains(image, "windows-2025") {
+		t.Skip("Windows Server 2025 is in preview; skipping GCE license check.")
+	}
 	elicensecodes, err := utils.GetMetadata(ctx, "instance", "attributes", "expected-license-codes")
 	if err != nil {
 		t.Fatalf("Failed to get expected licenses: %v", err)
