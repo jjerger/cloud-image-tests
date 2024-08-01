@@ -51,6 +51,13 @@ func ChangeRepo(t *testing.T) {
 func TestDriverUpgrade(t *testing.T) {
 	utils.WindowsOnly(t)
 	ChangeRepo(t)
+
+	command := fmt.Sprintf("%s update", googet)
+	err := utils.CheckPowershellReturnCode(command, 1)
+	if err != nil {
+		t.Fatalf("Error running googet update: %v", err)
+	}
+
 	drivers := []string{
 		"google-compute-engine-driver-pvpanic",
 		"google-compute-engine-driver-gga",
@@ -96,6 +103,13 @@ func TestDriverUpgrade(t *testing.T) {
 func TestPackageUpgrade(t *testing.T) {
 	utils.WindowsOnly(t)
 	ChangeRepo(t)
+
+	command := fmt.Sprintf("%s update", googet)
+	err := utils.CheckPowershellReturnCode(command, 1)
+	if err != nil {
+		t.Fatalf("Error running googet update: %v", err)
+	}
+
 	packages := []string{
 		"certgen",
 		"googet",
